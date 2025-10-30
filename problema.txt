@@ -1,0 +1,15 @@
+problema 
+En una cafetería real, los clientes siempre quieren personalizar sus bebidas. Algunos piden un espresso con 
+leche, otros lo quieren con caramelo, crema batida o incluso con varios agregados a la vez.
+Cuando pensamos en cómo llevar esto a un sistema, surge un problema: si intentamos 
+crear una clase por cada combinación posible, terminaríamos con muchísimas 
+clases diferentes, como EspressoConLeche, EspressoConCaramelo, AmericanoConCrema,
+ ChocolateConLecheYCaramelo, etc. Eso sería imposible de mantener
+ y de actualizar cada vez que la cafetería agregue un nuevo ingrediente al menú.
+
+La idea era poder construir una bebida de manera dinámica, 
+que el cliente elija lo que quiere y el sistema calcule automáticamente la descripción 
+y el precio final sin tener que programar cada opción por separado.
+Además, se buscaba que si en el futuro se agregan nuevos complementos 
+(como canela, vainilla o chispas de chocolate), se pudieran incluir fácilmente sin tener 
+que modificar el código ya hecho.

@@ -1,0 +1,28 @@
+
+Explicación de la Solución (Respuestas de la Implementación)
+
+Para resolver ese problema apliqué el Patrón de Diseño Decorator, porque este patrón permite 
+añadir funcionalidades a los objetos en tiempo de ejecución, envolviendo un objeto dentro de otro.
+En este caso, cada bebida base (como un espresso o un americano) puede envolverse con distintos
+ agregados (como leche, soya o caramelo), y cada agregado va sumando su propio costo y descripción.
+
+En el programa creé una interfaz llamada Bebida que define dos métodos: getDescripcion() y costo().
+Las clases Espresso, Americano y ChocolateCaliente implementan esa interfaz, 
+y representan las bebidas básicas que se venden en la cafetería.
+
+Luego, diseñé una clase abstracta llamada AgregadoDecorator que también 
+implementa Bebida, pero su función es envolver otra bebida.A partir de esa clase creé 
+los decoradores concretos: Leche, Soya, Caramelo y CremaBatida.Cada uno de ellos 
+agrega una parte a la descripción y suma su costo al precio total.
+
+Por ejemplo, cuando el usuario escoge un Americano y luego decide agregarle dos porciones de 
+caramelo, el código funciona así:
+
+Bebida pedido = new Caramelo(new Caramelo(new Americano()));
+
+
+Cada decorador Caramelo envuelve al anterior y el programa calcula el precio final automáticamente.
+
+Además, en la clase Main agregué un menú interactivo con Scanner, donde el usuario puede 
+escoger la bebida base y luego ir seleccionando los complementos que quiera. Al final, el sistema
+ muestra el nombre completo de la bebida y el total a pagar en pesos colombianos.
