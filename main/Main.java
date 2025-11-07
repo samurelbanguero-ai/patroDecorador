@@ -1,44 +1,44 @@
-// 📦 Paquete principal donde se ejecuta el programa
 package main;
 
-// Se importan todas las clases del paquete "decoratorcafeteria",
-// donde se encuentran las bebidas y los agregados.
 import decoratorcafeteria.*;
-
-// Se importan clases útiles para formatear precios y leer datos.
 import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
-
-    // ---------------------------------------------------------------
-    // 🔹 Método auxiliar: formatear precios en pesos colombianos (COP)
-    // ---------------------------------------------------------------
-    // Este método recibe un valor numérico (double) y lo convierte
-    // en un formato de moneda local de Colombia, por ejemplo: "$7.500,00".
-    // Se utiliza la clase NumberFormat y el Locale "es_CO" (español - Colombia).
     private static String cop(double valor) {
         NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
         return nf.format(valor);
     }
+    
+    // Método para formatear la descripción desde los componentes
+    private static String construirDescripcion(List<String> componentes) {
+        if (componentes.isEmpty()) {
+            return "";
+        }
+        
+        // El primer elemento es la bebida base
+        StringBuilder descripcion = new StringBuilder(componentes.get(0));
+        
+        // Los demás son agregados
+        if (componentes.size() > 1) {
+            descripcion.append(" con ");
+            for (int i = 1; i < componentes.size(); i++) {
+                if (i > 1) {
+                    descripcion.append(", ");
+                }
+                descripcion.append(componentes.get(i));
+            }
+        }
+        
+        return descripcion.toString();
+    }
 
-    // ---------------------------------------------------------------
-    // 🔹 Método principal main()
-    // ---------------------------------------------------------------
-    // Aquí comienza la ejecución del programa.
-    // Es el punto de entrada de la aplicación.
     public static void main(String[] args) {
-
-        // ---------------------------------------------------------------
-        // 1️⃣ Crear el lector de entrada (Scanner) para leer datos del usuario.
-        // ---------------------------------------------------------------
         Scanner sc = new Scanner(System.in);
-        Bebida bebida = null; // Esta variable guardará la bebida seleccionada.
+        Bebida bebida = null;
 
-        // ---------------------------------------------------------------
-        // 2️⃣ Mostrar menú principal de bebidas base.
-        // ---------------------------------------------------------------
         System.out.println("=== CAFETERÍA DECORATOR ===");
         System.out.println("Seleccione su bebida base:");
         System.out.println("1. Espresso");
@@ -46,12 +46,8 @@ public class Main {
         System.out.println("3. Chocolate Caliente");
         System.out.print("Opción: ");
 
-        // Leer la opción que el usuario selecciona
         int opcion = sc.nextInt();
 
-        // ---------------------------------------------------------------
-        // 3️⃣ Crear la bebida base según la opción elegida.
-        // ---------------------------------------------------------------
         switch (opcion) {
             case 1:
                 bebida = new Espresso();
@@ -67,9 +63,6 @@ public class Main {
                 bebida = new Espresso();
         }
 
-        // ---------------------------------------------------------------
-        // 4️⃣ Mostrar menú de agregados (decoradores).
-        // ---------------------------------------------------------------
         boolean continuar = true;
         while (continuar) {
             System.out.println("\nAgregue complementos:");
@@ -81,7 +74,6 @@ public class Main {
             System.out.print("Opción: ");
             int extra = sc.nextInt();
 
-            // Según la opción seleccionada, se agrega un decorador a la bebida
             switch (extra) {
                 case 1:
                     bebida = new Leche(bebida);
@@ -96,22 +88,19 @@ public class Main {
                     bebida = new CremaBatida(bebida);
                     break;
                 case 5:
-                    continuar = false; // Sale del bucle
+                    continuar = false;
                     break;
                 default:
                     System.out.println("Opción no válida, intenta nuevamente.");
             }
         }
 
-        // ---------------------------------------------------------------
-        // 5️⃣ Mostrar el resultado final del pedido.
-        // ---------------------------------------------------------------
         System.out.println("\n==== RESUMEN DE TU PEDIDO ====");
-        System.out.println("Bebida: " + bebida.getDescripcion()); // Muestra descripción completa
-        System.out.println("Total a pagar: " + cop(bebida.costo())); // Muestra precio formateado
+        String descripcion = construirDescripcion(bebida.listarComponentes());
+        System.out.println("Bebida: " + descripcion);
+        System.out.println("Total a pagar: " + cop(bebida.costo()));
         System.out.println("==============================");
 
-        // Cerrar el Scanner para liberar recursos.
         sc.close();
     }
 }
